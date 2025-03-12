@@ -5,6 +5,7 @@ import { Point } from 'src/models/Point';
 export const usePointsStore = defineStore('points', () => {
 
   const points = ref<Point[]>([]);
+  const pointsBackup = ref<Point[]>([]);
   const currentPoint = ref<Point | null>(null);
   const selectedPoints = ref<Set<number>>(new Set());
   const isEditMode = ref(false);
@@ -124,6 +125,13 @@ function cancelEdit(): void {
     selectedPoints.value.delete(pointId);
   }
 
+  function search(input: string){
+    pointsBackup.value ??= points.value;
+
+    console.log(input)
+
+  }
+
   return {
     points,
     currentPoint,
@@ -141,5 +149,6 @@ function cancelEdit(): void {
     cancelEdit,
     setSelected,
     unselectPoint,
+    search,
   };
 });

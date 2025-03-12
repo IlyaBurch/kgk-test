@@ -1,9 +1,32 @@
 <template>
-    <q-btn
-    label="Добавить точку"
-    @click="handleCreatePoint()"
-    color="primary"
-  />
+
+  <div class="row justify-between items-center">
+    <h5>Точки</h5>
+    <div class="row items-center">
+      <q-input v-if="searchMode" v-model="inputQuery" @change="store.search(inputQuery)"/>
+      <q-btn v-if="!searchMode"
+        flat
+        round
+        icon="search"
+        @click="searchMode = !searchMode"
+        color="primary"
+      />
+      <q-btn v-else
+        flat
+        round
+        icon="cancel"
+        @click="searchMode = !searchMode"
+        color="primary"
+      />
+    </div>
+  </div>
+      <q-btn
+      flat
+      round
+      icon="create"
+      @click="handleCreatePoint()"
+      color="primary"
+    />
   <q-virtual-scroll
     ref="virtualListRef"
     :items="store.points"
@@ -45,6 +68,10 @@ const store = usePointsStore();
 const currentPoint = computed(() => store.currentPoint);
 
 const virtualListRef = ref();
+
+const searchMode = ref(false);
+
+const inputQuery = ref<string>('')
 
 function handleCreatePoint (){
   store.createPoint();

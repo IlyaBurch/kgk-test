@@ -3,7 +3,6 @@
   <q-page padding>
     <div class="row">
       <div class="col-3 list">
-        <h5>Точки</h5>
         <PointList />
       </div>
       <div class="col-6 pl-2 gap">
