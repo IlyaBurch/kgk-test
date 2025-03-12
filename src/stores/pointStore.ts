@@ -58,10 +58,8 @@ function createPoint(): void {
     '', '', 0, 0, 0, '', '', '', '', '', // Остальные параметры
   );
 
-  // Добавляем новый элемент в массив
   points.value.push(newPoint);
 
-  // Устанавливаем новый элемент как текущий
   setCurrentPoint(newPoint);
 }
 
