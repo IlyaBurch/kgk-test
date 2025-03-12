@@ -15,14 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount } from 'vue';
-import { usePointsStore } from 'src/stores/pointStore';
 import PointList from 'src/components/PointList.vue';
 import PointForm from 'src/components/PointForm.vue';
-
-const pointStore = usePointsStore();
-
-onBeforeMount(() => {
-  pointStore.generatePoints(100);
-});
 </script>

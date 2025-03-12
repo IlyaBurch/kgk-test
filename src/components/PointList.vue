@@ -7,21 +7,20 @@
   <q-virtual-scroll
     ref="virtualListRef"
     :items="store.points"
-    separator
     class="scroll"
-    :virtual-scroll-slice-size="50"
   >
     <template v-slot:default="{ item, index }">
       <q-item
         :key="index"
         clickable
-        :class="{ 'bg-grey-2': store.selectedPoints.has(item.id) }"
         :active="item.id === currentPoint?.id"
-        active-class="bg-purple-1 text-purple"
+        active-class="item-active"
+        class="item"
         @click="store.setCurrentPoint(item)"
       >
         <q-item-section avatar>
           <q-checkbox
+            :name="item.id.toString()"
             v-model="store.selectedPoints"
             :val="item.id"
             @click.stop="store.setSelected(item.id)"
@@ -39,7 +38,7 @@
 <script setup lang="ts">
 import { nextTick } from 'process';
 import { usePointsStore } from 'src/stores/pointStore';
-import { computed, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 const store = usePointsStore();
 const currentPoint = computed(() => store.currentPoint);
@@ -47,8 +46,21 @@ const currentPoint = computed(() => store.currentPoint);
 // Ссылка на q-virtual-scroll
 const virtualListRef = ref();
 
+onBeforeMount(() => {
+  store.generatePoints(100);
+  console.log('Number of points:', store.points.length);
+
+});
+
+onMounted(() => {
+  if (store.points.length < 10) {
+    console.warn('Not enough points to fill the container');
+  }
+});
+
 function handleCreatePoint (){
   store.createPoint();
+  console.log(store.points)
 
   const index = store.points.length;
 
@@ -61,7 +73,20 @@ function handleCreatePoint (){
 
 <style lang="scss">
 .scroll {
-  height: 400px; /* или height: 400px; */
-  overflow: auto;
+  height: 400px;
 }
+
+.item {
+  border: 1px solid plum;
+  border-radius: 10px;
+  padding: 5px;
+  margin: 5px;
+  height: 70px;
+  color: plum;
+
+  &-active {
+    border: 2px solid purple;
+  }
+}
+
 </style>
