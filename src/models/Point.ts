@@ -1,5 +1,6 @@
 export class Point {
   id: number;
+  checked: boolean = false;
   name: string;
   code: string;
   address: string;
@@ -14,6 +15,7 @@ export class Point {
 
   constructor(
     id: number,
+    checked: boolean,
     name: string,
     code: string,
     address: string,
@@ -27,6 +29,7 @@ export class Point {
     actualDeparture: string,
   ) {
     this.id = id;
+    this.checked = checked;
     this.name = name;
     this.code = code;
     this.address = address;
@@ -42,6 +45,7 @@ export class Point {
 
   // Метод для обновления данных точки
   update(point: Point): void {
+    this.checked = point.checked;
     this.name = point.name;
     this.code = point.code;
     this.address = point.address;
@@ -58,6 +62,7 @@ export class Point {
   // Статический метод для создания новой точки
   static create(
     id: number,
+    checked: boolean = false,
     name: string,
     code: string,
     address: string,
@@ -72,6 +77,7 @@ export class Point {
   ): Point {
     return new Point(
       id,
+      checked,
       name,
       code,
       address,

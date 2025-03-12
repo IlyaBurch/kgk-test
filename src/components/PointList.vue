@@ -1,9 +1,12 @@
 <template>
-
-  <div class="row justify-between items-center">
-    <h5>Точки</h5>
+  <div class="row justify-between items-center q-pa-md">
+    <h4>Точки</h4>
     <div class="row items-center">
-      <q-input v-if="searchMode" v-model="inputQuery" @change="store.search(inputQuery)"/>
+      <q-input v-if="searchMode" label="Поиск по названиям" v-model="inputQuery" @change="store.search(inputQuery)">
+        <template v-slot:after>
+          <q-btn round dense flat icon="send" @click="store.search(inputQuery)" />
+        </template>
+      </q-input>
       <q-btn v-if="!searchMode"
         flat
         round
@@ -15,18 +18,24 @@
         flat
         round
         icon="cancel"
-        @click="searchMode = !searchMode"
+        @click="cancelSearch()"
         color="primary"
       />
     </div>
   </div>
-      <q-btn
-      flat
-      round
-      icon="create"
-      @click="handleCreatePoint()"
-      color="primary"
-    />
+  <q-checkbox
+    name="selectAll"
+    label="Выбрать все"
+    v-model="store.isSelected"
+    @update:model-value="handleAllSelected()"
+  />
+  <q-btn
+    flat
+    round
+    icon="create"
+    @click="handleCreatePoint()"
+    color="primary"
+  />
   <q-virtual-scroll
     ref="virtualListRef"
     :items="store.points"
@@ -38,16 +47,14 @@
         :key="index"
         clickable
         :active="item.id === currentPoint?.id"
-        active-class="item-active"
+        active-class="item-active primary"
         class="item"
         @click="store.setCurrentPoint(item)"
       >
         <q-item-section avatar>
           <q-checkbox
             :name="item.id.toString()"
-            v-model="store.selectedPoints"
-            :val="item.id"
-            @click.stop="store.setSelected(item.id)"
+            v-model="item.checked"
           />
         </q-item-section>
         <q-item-section>
@@ -62,7 +69,7 @@
 <script setup lang="ts">
 import { nextTick } from 'process';
 import { usePointsStore } from 'src/stores/pointStore';
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 
 const store = usePointsStore();
 const currentPoint = computed(() => store.currentPoint);
@@ -81,6 +88,26 @@ function handleCreatePoint (){
     virtualListRef.value.scrollTo(index, 'start-force')
   })
 }
+
+function cancelSearch() {
+  store.search('');
+  searchMode.value = false;
+}
+
+
+function handleAllSelected() {
+  if (store.isSelected) {
+    store.selectAll();
+    store.isSelected = true;
+  } else {
+    store.unselectAll();
+    store.isSelected = false;
+  }
+}
+
+onMounted(() => {
+  store.setFirstCurrent();
+})
 </script>
 
 <style lang="scss">
@@ -89,15 +116,16 @@ function handleCreatePoint (){
 }
 
 .item {
-  border: 1px solid plum;
+  border: 1px solid $secondary;
   border-radius: 10px;
   padding: 5px;
   margin: 5px;
   // height: 70px;
-  color: plum;
+  color: $secondary;
 
   &-active {
-    border: 2px solid purple;
+    border: 2px solid $primary;
+    color: $primary;
   }
 }
 

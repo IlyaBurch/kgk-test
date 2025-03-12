@@ -1,12 +1,10 @@
-<!-- src/pages/IndexPage.vue -->
 <template>
   <q-page padding>
     <div class="row">
       <div class="col-3 list">
         <PointList />
       </div>
-      <div class="col-6 pl-2 gap">
-        <h5>Редактирование точки</h5>
+      <div class="col-6 pl-2">
         <PointForm />
       </div>
     </div>
@@ -24,9 +22,3 @@ onBeforeMount(() => {
   store.generatePoints(10000);
 });
 </script>
-
-<style lang="scss">
-.gap{
-  margin-left: 20px;
-}
-</style>
