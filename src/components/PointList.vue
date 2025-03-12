@@ -4,7 +4,11 @@
     <div class="row items-center">
       <q-input v-if="searchMode" label="Поиск по названиям" v-model="inputQuery" @change="store.search(inputQuery)">
         <template v-slot:after>
-          <q-btn round dense flat icon="send" @click="store.search(inputQuery)" />
+          <q-btn round dense flat icon="send" @click="store.search(inputQuery)">
+            <q-tooltip>
+              Поиск
+            </q-tooltip>
+          </q-btn>
         </template>
       </q-input>
       <q-btn v-if="!searchMode"
@@ -13,29 +17,43 @@
         icon="search"
         @click="searchMode = !searchMode"
         color="primary"
-      />
+      >
+        <q-tooltip>
+          Найти точку
+        </q-tooltip>
+      </q-btn>
       <q-btn v-else
         flat
         round
         icon="cancel"
         @click="cancelSearch()"
         color="primary"
-      />
+      >
+        <q-tooltip>
+          Отменить поиск
+        </q-tooltip>
+      </q-btn>
     </div>
   </div>
-  <q-checkbox
-    name="selectAll"
-    label="Выбрать все"
-    v-model="store.isSelected"
-    @update:model-value="handleAllSelected()"
-  />
-  <q-btn
-    flat
-    round
-    icon="create"
-    @click="handleCreatePoint()"
-    color="primary"
-  />
+  <div class="row justify-between items-center">
+    <q-checkbox
+      name="selectAll"
+      label="Выбрать все"
+      v-model="store.isSelected"
+      @update:model-value="handleAllSelected()"
+    />
+    <q-btn
+      flat
+      round
+      icon="create"
+      @click="handleCreatePoint()"
+      color="primary"
+    >
+      <q-tooltip>
+        Создать новую точку
+      </q-tooltip>
+    </q-btn>
+  </div>
   <q-virtual-scroll
     ref="virtualListRef"
     :items="store.points"

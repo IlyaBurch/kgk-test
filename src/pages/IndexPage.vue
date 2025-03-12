@@ -1,7 +1,7 @@
 <template>
   <q-page padding>
     <div class="row">
-      <div class="col-3 list">
+      <div class="col-4 list">
         <PointList />
       </div>
       <div class="col-6 pl-2">
