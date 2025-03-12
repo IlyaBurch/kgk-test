@@ -8,6 +8,7 @@
     ref="virtualListRef"
     :items="store.points"
     class="scroll"
+    virtual-scroll-slice-size="6"
   >
     <template v-slot:default="{ item, index }">
       <q-item
@@ -38,37 +39,21 @@
 <script setup lang="ts">
 import { nextTick } from 'process';
 import { usePointsStore } from 'src/stores/pointStore';
-import { computed, onBeforeMount, onMounted, ref } from 'vue';
+import { computed, ref } from 'vue';
 
 const store = usePointsStore();
 const currentPoint = computed(() => store.currentPoint);
 
-// Ссылка на q-virtual-scroll
 const virtualListRef = ref();
-
-onBeforeMount(() => {
-  store.generatePoints(100);
-  console.log('Number of points:', store.points.length);
-
-});
-
-onMounted(() => {
-  if (store.points.length < 10) {
-    console.warn('Not enough points to fill the container');
-  }
-});
 
 function handleCreatePoint (){
   store.createPoint();
-  console.log(store.points)
-
-  const index = store.points.length;
+  const index = store.totalPoints
 
   nextTick(() => {
-    virtualListRef.value.scrollTo(index);
+    virtualListRef.value.scrollTo(index, 'start-force')
   })
 }
-
 </script>
 
 <style lang="scss">
