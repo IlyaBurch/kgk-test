@@ -120,7 +120,6 @@ onMounted(() => {
   border-radius: 10px;
   padding: 5px;
   margin: 5px;
-  // height: 70px;
   color: $secondary;
 
   &-active {
