@@ -1,43 +1,28 @@
+<!-- src/pages/IndexPage.vue -->
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
-      title="Example component"
-      active
-      :todos="todos"
-      :meta="meta"
-    ></example-component>
+  <q-page padding>
+    <div class="row">
+      <div class="col-3">
+        <h5>Точки</h5>
+        <PointList />
+      </div>
+      <div class="col-6">
+        <h5>Редактирование точки</h5>
+        <PointForm />
+      </div>
+    </div>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import type { Todo, Meta } from 'components/models';
-import ExampleComponent from 'components/ExampleComponent.vue';
+import { onBeforeMount } from 'vue';
+import { usePointsStore } from 'src/stores/pointStore';
+import PointList from 'src/components/PointList.vue';
+import PointForm from 'src/components/PointForm.vue';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1'
-  },
-  {
-    id: 2,
-    content: 'ct2'
-  },
-  {
-    id: 3,
-    content: 'ct3'
-  },
-  {
-    id: 4,
-    content: 'ct4'
-  },
-  {
-    id: 5,
-    content: 'ct5'
-  }
-]);
+const pointStore = usePointsStore();
 
-const meta = ref<Meta>({
-  totalCount: 1200
+onBeforeMount(() => {
+  pointStore.generatePoints(100);
 });
 </script>
